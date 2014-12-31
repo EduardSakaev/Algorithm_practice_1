@@ -1,7 +1,7 @@
 
 /****************************************************************************
- *  Compilation:  javac InteractivePercolationVisualizer.java
- *  Execution:    java InteractivePercolationVisualizer N
+ *  Compilation:  java Percolation.java
+ *  Execution:    java Percoaltion.class N
  *  Dependencies: PercolationVisualizer.java Percolation.java
  *                StdDraw.java StdOut.java
  *
@@ -40,38 +40,39 @@ public class Percolation
    public void open(int i, int j) 
    {  
        int id    = getGridIndex(i, j);
-       
+
        if (j + 1 <= igridSize) //right 
        {
            int iright = getGridIndex(i, j + 1);
-           if (!isOpen(i, j + 1) && !weightedquf.connected(id, iright))
+           if (isOpen(i, j + 1) && !weightedquf.connected(id, iright))
            weightedquf.union(id, iright);
        }
+
        if (j - 1 > 0) //left
        {
            int ileft = getGridIndex(i, j - 1);
-           if (!isOpen(i, j - 1) && !weightedquf.connected(id, ileft))
+           if (isOpen(i, j - 1) && !weightedquf.connected(id, ileft))
            weightedquf.union(id, ileft);
        }
 
        if (i - 1 > 0) //top
        {
            int itop = getGridIndex(i - 1, j);
-           if (!isOpen(i - 1, j) && !weightedquf.connected(id, itop))
+           if (isOpen(i - 1, j) && !weightedquf.connected(id, itop))
            weightedquf.union(id, itop);
        }
 
        if (i + 1 <= igridSize) //bottom
        {
            int ibottom = getGridIndex(i + 1, j);
-           if (!isOpen(i + 1, j) && !weightedquf.connected(id, ibottom))
+           if (isOpen(i + 1, j) && !weightedquf.connected(id, ibottom))
            weightedquf.union(id, ibottom);
        }
 
        grid[id] = 1;
 
        if (i == 1)
-       weightedquf.union(0, id);
+           weightedquf.union(0, id);
 
        for (int k = 1; k <= igridSize; ++k)
        {
@@ -92,9 +93,9 @@ public class Percolation
    public boolean isOpen(int i, int j) 
    {
        int id = getGridIndex(i, j);
-       boolean bOpen = true;
+       boolean bOpen = false;
        if (grid[id] != 0)
-       bOpen =  false;
+    	   bOpen =  true;
        return bOpen;
    }     
    
