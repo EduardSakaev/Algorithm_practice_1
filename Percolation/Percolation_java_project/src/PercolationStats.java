@@ -111,10 +111,17 @@ public class PercolationStats
 
    public static void main(String[] args)// test client (described below)
    {
-       PercolationStats percstats = new PercolationStats(200, 100);
-       StdOut.println("Mean()                  = " + percstats.mean());
-       StdOut.println("StdDev()                = " + percstats.stddev());
-       StdOut.println("95% confidence interval = " + percstats.confidenceLo()
-                     +  " " + percstats.confidenceHi());
+       if (args.length > 1)
+       {
+           int iSize        = Integer.parseInt(args[0]);
+           int iExperiments = Integer.parseInt(args[1]);
+           PercolationStats percstats = new PercolationStats(iSize, iExperiments);
+           StdOut.println("Mean()                  = " + percstats.mean());
+           StdOut.println("StdDev()                = " + percstats.stddev());
+           StdOut.println("95% confidence interval = "
+           + percstats.confidenceLo() +  " " + percstats.confidenceHi());
+       }
+       else
+          StdOut.println("Enter arguments! ");
    }
 }
