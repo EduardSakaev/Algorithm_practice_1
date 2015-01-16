@@ -23,14 +23,14 @@ import java.util.NoSuchElementException;
     */
    public Deque(){
 	   first = null;
-	   last = null;
+	   last  = null;
 	   N = 0;
    }                           
    /*
     * // is the deque empty?
     */
    public boolean isEmpty(){
-	   return first == null;
+	   return last == null;
    }   
    
    /*
@@ -47,6 +47,7 @@ import java.util.NoSuchElementException;
 	   Node<Item> oldfirst = first;
        first = new Node<Item>();
        first.item = item;
+       first.prev = null;
        if (isEmpty()) 
        {
     	   first.next = null;
@@ -66,9 +67,15 @@ import java.util.NoSuchElementException;
        last.item = item;
        last.next = null;
        if (isEmpty()) 
+       {
+    	   last.prev = oldlast;
     	   first = last;
+       }
        else  
+       {
     	    oldlast.next = last;
+    	    last.prev = oldlast;
+       }
        N++;
    }        
    
@@ -79,6 +86,7 @@ import java.util.NoSuchElementException;
 	   if (isEmpty()) throw new NoSuchElementException("Queue underflow");
 	   Item item = first.item;
 	   first = first.next;
+	   first.prev = null;
 	   if (isEmpty()) last = null;   // to avoid loitering
 	   N--;
        return item;
@@ -90,8 +98,9 @@ import java.util.NoSuchElementException;
    public Item removeLast() {
 	   if (isEmpty()) throw new NoSuchElementException("Queue underflow");
 	   Item item = last.item;
-	   first = first.next;
-	   if (isEmpty()) last = null;   // to avoid loitering
+	   last = last.prev;
+	   last.next = null;
+	   if (isEmpty()) first = null;   // to avoid loitering
 	   N--;
        return item;
    }                
