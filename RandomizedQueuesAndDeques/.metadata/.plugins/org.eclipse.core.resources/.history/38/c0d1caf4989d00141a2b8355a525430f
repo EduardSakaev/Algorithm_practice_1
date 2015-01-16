@@ -1,0 +1,98 @@
+import Stack.Node;
+
+/**
+ * Deque class
+ *  @author Eduard Sakaiev
+ */
+
+   public class Deque<Item> implements Iterable<Item> {
+	   
+    private int N;               // number of elements on dequeue
+    private Node<Item> first;    // beginning of queue
+    private Node<Item> last;     // end of queue
+
+    // helper linked list class
+    private static class Node<Item> {
+        private Item item;
+        private Node<Item> next;
+    }
+   
+   /*
+    * // construct an empty deque
+    */
+   public Deque(){
+	   first = null;
+	   last = null;
+	   N = 0;
+   }                           
+   /*
+    * // is the deque empty?
+    */
+   public boolean isEmpty(){
+	   return first == null;
+   }   
+   
+   /*
+    * // return the number of items on the deque
+    */
+   public int size() {
+	   return N;
+   }        
+   
+   /*
+    * // insert the item at the front
+    */
+   public void addFirst(Item item){
+	   Node<Item> oldfirst = first;
+       first = new Node<Item>();
+       first.item = item;
+       if (isEmpty()) 
+       {
+    	   first.next = null;
+    	   last = first;
+       }
+       else           first.next = oldfirst;
+       N++;
+   }         
+   
+   /*
+    * // insert the item at the end
+    */
+   public void addLast(Item item){
+	   Node<Item> oldlast = last;
+       last = new Node<Item>();
+       last.item = item;
+       if (isEmpty()) 
+       {
+    	   last.next = null;
+    	   first = last;
+       }
+       else  
+    	   {last.next = null;
+       N++;
+   }        
+   
+   /*
+    * // delete and return the item at the front
+    */
+   public Item removeFirst() {
+	   
+   }  
+   
+   /*
+    * // delete and return the item at the end
+    */
+   public Item removeLast() {
+	   
+   }                
+   
+   /*
+    * // return an iterator over items in order from front to end
+    */
+   public Iterator<Item> iterator() {
+	   
+   }  
+   
+   public static void main(String[] args) {}  // unit testing
+}
+

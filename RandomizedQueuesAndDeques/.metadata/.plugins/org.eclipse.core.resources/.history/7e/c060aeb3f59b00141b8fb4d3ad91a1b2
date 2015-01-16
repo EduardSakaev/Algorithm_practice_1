@@ -1,0 +1,68 @@
+import Stack.Node;
+
+/**
+ * Deque class
+ *  @author Eduard Sakaiev
+ */
+
+   public class Deque<Item> implements Iterable<Item> {
+	   
+   private int N;                // size of the deque
+   private Node<Item> first;     // first element in deque
+   private Node<Item> last;     // last element in deque
+   /*
+    * // construct an empty deque
+    */
+   public Deque(){}                           
+   /*
+    * // is the deque empty?
+    */
+   public boolean isEmpty(){
+	   return false;
+   }   
+   
+   /*
+    * // return the number of items on the deque
+    */
+   public int size() {
+	   return 0;
+   }        
+   
+   /*
+    * // insert the item at the front
+    */
+   public void addFirst(Item item){
+	   
+   }         
+   
+   /*
+    * // insert the item at the end
+    */
+   public void addLast(Item item){
+	   
+   }        
+   
+   /*
+    * // delete and return the item at the front
+    */
+   public Item removeFirst() {
+	   
+   }  
+   
+   /*
+    * // delete and return the item at the end
+    */
+   public Item removeLast() {
+	   
+   }                
+   
+   /*
+    * // return an iterator over items in order from front to end
+    */
+   public Iterator<Item> iterator() {
+	   
+   }      
+   
+   public static void main(String[] args) {}  // unit testing
+}
+

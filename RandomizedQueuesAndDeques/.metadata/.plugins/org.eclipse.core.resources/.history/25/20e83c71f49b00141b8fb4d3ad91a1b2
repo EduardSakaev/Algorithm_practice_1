@@ -1,0 +1,50 @@
+/**
+ * Deque class
+ *  @author Eduard Sakaiev
+ */
+
+   public class Deque<Item> implements Iterable<Item> {
+   /*
+    * // construct an empty deque
+    */
+   public Deque(){}                           
+   /*
+    * // is the deque empty?
+    */
+   public boolean isEmpty(){
+	   return false;
+   }   
+   
+   /*
+    * // return the number of items on the deque
+    */
+   public int size() {
+	   return 0;
+   }        
+   
+   /*
+    * // insert the item at the front
+    */
+   public void addFirst(Item item){
+	   
+   }         
+   
+   /*
+    * // insert the item at the end
+    */
+   public void addLast(Item item){
+	   
+   }        
+   
+   /*
+    * // delete and return the item at the front
+    */
+   public Item removeFirst() {
+	   Item item;
+	   return item;
+   }               
+   public Item removeLast() {}                // delete and return the item at the end
+   public Iterator<Item> iterator() {}        // return an iterator over items in order from front to end
+   public static void main(String[] args) {}  // unit testing
+}
+
