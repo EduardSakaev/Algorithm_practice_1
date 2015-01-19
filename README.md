@@ -8,3 +8,16 @@ need to copy algs4 to ~/algs4
 checkstyle-algs4 Path_to_java.java
 findbug the same
 
+
+
+//=======================================
+howto compile and run java project in ubuntu from terminal: 	
+
+if you have single class in your app called flights.java and all of your required jar are located at /home/ubuntu/test/libs/ then use this
+
+javac -cp '.:/home/ubuntu/test/libs/*.jar' flights.java
+
+and to run
+
+java -cp '.:/home/ubuntu/test/libs/*.jar' flights
+
