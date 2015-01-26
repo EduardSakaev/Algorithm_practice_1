@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -5,7 +6,7 @@ import java.util.NoSuchElementException;
  *  @author Eduard Sakaiev
  */
 
-   public class Deque<Item> implements Iterable<Item> {
+public class Deque<Item> implements Iterable<Item> {
 	   
     private int N;               // number of elements on dequeue
     private Node<Item> first;    // beginning of queue
@@ -30,7 +31,7 @@ import java.util.NoSuchElementException;
     * // is the deque empty?
     */
    public boolean isEmpty(){
-	   return last == null;
+	   return N == 0;
    }   
    
    /*
@@ -48,14 +49,17 @@ import java.util.NoSuchElementException;
        first = new Node<Item>();
        first.item = item;
        first.prev = null;
+       first.next = oldfirst;
        if (isEmpty()) 
        {
-    	   first.next = null;
     	   last = first;
        }
-       else          
-    	   first.next = oldfirst;
+       else   
+       {
+    	   oldfirst.prev = first;
+       }
        N++;
+       
    }         
    
    /*
@@ -66,16 +70,12 @@ import java.util.NoSuchElementException;
        last = new Node<Item>();
        last.item = item;
        last.next = null;
-       if (isEmpty()) 
-       {
-    	   last.prev = oldlast;
+       last.prev = oldlast;
+      
+       if (isEmpty())   
     	   first = last;
-       }
        else  
-       {
-    	    oldlast.next = last;
-    	    last.prev = oldlast;
-       }
+    	   oldlast.next = last;
        N++;
    }        
    
@@ -86,8 +86,6 @@ import java.util.NoSuchElementException;
 	   if (isEmpty()) throw new NoSuchElementException("Queue underflow");
 	   Item item = first.item;
 	   first = first.next;
-	   first.prev = null;
-	   if (isEmpty()) last = null;   // to avoid loitering
 	   N--;
        return item;
    }  
@@ -99,8 +97,6 @@ import java.util.NoSuchElementException;
 	   if (isEmpty()) throw new NoSuchElementException("Queue underflow");
 	   Item item = last.item;
 	   last = last.prev;
-	   last.next = null;
-	   if (isEmpty()) first = null;   // to avoid loitering
 	   N--;
        return item;
    }                
@@ -109,9 +105,49 @@ import java.util.NoSuchElementException;
     * // return an iterator over items in order from front to end
     */
    public Iterator<Item> iterator() {
-	   
+	   return new ListIterator<Item>(first); 
    }  
    
-   public static void main(String[] args) {}  // unit testing
+   // an iterator, doesn't implement remove() since it's optional
+   private class ListIterator<Item> implements Iterator<Item> {
+       private Node<Item> current;
+
+       public ListIterator(Node<Item> first) {
+           current = first;
+       }
+
+       public boolean hasNext()  { return current != null;                     }
+       public void remove()      { throw new UnsupportedOperationException();  }
+
+       public Item next() {
+           if (!hasNext()) throw new NoSuchElementException();
+           Item item = current.item;
+           current = current.next; 
+           return item;
+       }
+   }
+   
+   /*
+    * // unit testing
+    */
+   public static void main(String[] args) 
+   {
+	   Deque<Integer> deq = new Deque<Integer>();
+	   
+	   for (Integer i = 0; i < 10; ++i)
+		   deq.addLast(i);
+	   
+	   for (Integer i = 0; i < 5; ++i)
+		   deq.addFirst(i);
+	   
+	   for (Integer i = 0; i < 13; ++i)
+		   deq.removeLast();
+	   
+	   
+	   while(!deq.isEmpty())
+	   {
+		   StdOut.println("Smthing" + " " + deq.removeLast());
+	   }
+   }  
 }
 
