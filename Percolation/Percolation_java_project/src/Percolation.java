@@ -14,105 +14,127 @@
 
 public class Percolation 
 {
-   private int [] grid;
+   private byte [] grid;
    private int igridSize;
-   private WeightedQuickUnionUF weightedquf;
+   private WeightedQuickUnionUF weightedquf1;
+   private WeightedQuickUnionUF weightedquf2;
 
    /*---------------------------------------------------------
     *  // create N-by-N grid, with all sites blocked
-    *  
+    *
     *---------------------------------------------------------*/
-   public Percolation(int N) 
+   public Percolation(int N)
    {
-       grid = new int[N * N + 1];
+       if (N <= 0)
+          throw new java.lang.IllegalArgumentException("illegal argument N <= 0");
+       grid = new byte[N * N + 1];
        for (int i = 0; i < N * N; ++i)
             grid[i] = 0;          //check if is open
-         
+
        igridSize = N;        //Numbers of raw/columns   
        // +2 means 0 - top  N + 1 - bottom
-       weightedquf = new WeightedQuickUnionUF(N * N + 2);
-   }      
+       weightedquf1 = new WeightedQuickUnionUF(N * N + 2);
+       weightedquf2 = new WeightedQuickUnionUF(N * N + 2);
+   }
 
    /*---------------------------------------------------------
     *  open site (row i, column j) if it is not open already
     *  
     *---------------------------------------------------------*/
    public void open(int i, int j) 
-   {  
-       int id    = getGridIndex(i, j);
+   {
+       if (i <= 0 || i > igridSize)
+          throw new java.lang.IndexOutOfBoundsException("row index i out of bounds");
+       if (j <= 0 || j > igridSize) 
+          throw new java.lang.IndexOutOfBoundsException("row index j out of bounds");
+
+       int id, iNearIndex;
+       id = getGridIndex(i, j);
 
        if (j + 1 <= igridSize) //right 
        {
-           int iright = getGridIndex(i, j + 1);
-           if (isOpen(i, j + 1) && !weightedquf.connected(id, iright))
-           weightedquf.union(id, iright);
+            iNearIndex = getGridIndex(i, j + 1);
+           if (isOpen(i, j + 1))
+           {
+              weightedquf1.union(id, iNearIndex);
+              weightedquf2.union(id, iNearIndex);
+           }
        }
 
        if (j - 1 > 0) //left
        {
-           int ileft = getGridIndex(i, j - 1);
-           if (isOpen(i, j - 1) && !weightedquf.connected(id, ileft))
-           weightedquf.union(id, ileft);
+           iNearIndex = getGridIndex(i, j - 1);
+           if (isOpen(i, j - 1))
+           {
+              weightedquf1.union(id, iNearIndex);
+              weightedquf2.union(id, iNearIndex);
+           }
        }
 
        if (i - 1 > 0) //top
        {
-           int itop = getGridIndex(i - 1, j);
-           if (isOpen(i - 1, j) && !weightedquf.connected(id, itop))
-           weightedquf.union(id, itop);
+           iNearIndex = getGridIndex(i - 1, j);
+           if (isOpen(i - 1, j))
+           {
+              weightedquf1.union(id, iNearIndex);
+              weightedquf2.union(id, iNearIndex);
+           }
        }
 
        if (i + 1 <= igridSize) //bottom
        {
-           int ibottom = getGridIndex(i + 1, j);
-           if (isOpen(i + 1, j) && !weightedquf.connected(id, ibottom))
-           weightedquf.union(id, ibottom);
+           iNearIndex = getGridIndex(i + 1, j);
+           if (isOpen(i + 1, j))
+           {
+              weightedquf1.union(id, iNearIndex);
+              weightedquf2.union(id, iNearIndex);
+           }
        }
-
        grid[id] = 1;
 
        if (i == 1)
-           weightedquf.union(0, id);
-
-       for (int k = 1; k <= igridSize; ++k)
        {
-           id = getGridIndex(igridSize, k);
-           if (weightedquf.connected(0, id))
-           {
-               weightedquf.union(id, igridSize * igridSize + 1);
-               break;
-           }
+          weightedquf1.union(0, id);
+          weightedquf2.union(0, id);
        }
 
-   }          
-   
-   /*---------------------------------------------------------
-    *  is site (row i, column j) open?
-    *  
+       if (i == igridSize)
+           weightedquf2.union(id, igridSize * igridSize + 1);
+   }
+
+    /*---------------------------------------------------------
+    *     *  is site (row i, column j) open?
+    *
     *---------------------------------------------------------*/
-   public boolean isOpen(int i, int j) 
+   public boolean isOpen(int i, int j)
    {
-       int id = getGridIndex(i, j);
+       if (i <= 0 || i > igridSize)
+         throw new java.lang.IndexOutOfBoundsException("row index i out of bounds");
+       if (j <= 0 || j > igridSize)
+         throw new java.lang.IndexOutOfBoundsException("row index j out of bounds");
        boolean bOpen = false;
-       if (grid[id] != 0)
-    	   bOpen =  true;
+       if (grid[getGridIndex(i, j)] != 0)
+          bOpen =  true;
        return bOpen;
-   }     
-   
+   }
+
    /*---------------------------------------------------------
     *  // is site (row i, column j) full?
     *  
     *---------------------------------------------------------*/
    public boolean isFull(int i, int j) 
    {
-       int id = getGridIndex(i, j);
+       if (i <= 0 || i > igridSize) 
+         throw new java.lang.IndexOutOfBoundsException("row index i out of bounds");
+       if (j <= 0 || j > igridSize)
+         throw new java.lang.IndexOutOfBoundsException("row index j out of bounds");
        boolean bConnected = false;
-       if (weightedquf.connected(0, id))
+       if (weightedquf1.connected(getGridIndex(i, j), 0))
        bConnected =  true;
        return bConnected;
-   } 
-   
-   
+   }
+
+
    /*---------------------------------------------------------
     *  // does the system percolate?
     *  
@@ -121,11 +143,10 @@ public class Percolation
    {
        int ibottom = igridSize * igridSize + 1;
        boolean bPercolate = false;
-       if (weightedquf.connected(0, ibottom) 
-           || weightedquf.connected(ibottom, 0))
+       if (weightedquf2.connected(ibottom, 0))
            bPercolate = true;
        return bPercolate;
-   }             
+   }
 
    /*---------------------------------------------------------
     *  translate i, j raw into sequence.
@@ -133,7 +154,8 @@ public class Percolation
     *---------------------------------------------------------*/
    private int getGridIndex(int i, int j)
    {
-       return (i - 1) * igridSize + j;
+       int id = (i - 1) * igridSize + j;
+       return id;
    }
    //public static void main(String[] args);   // test client (optional)
 }
