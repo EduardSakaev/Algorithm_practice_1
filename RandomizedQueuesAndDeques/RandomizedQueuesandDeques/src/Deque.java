@@ -29,7 +29,7 @@ public class Deque<Item> implements Iterable<Item> {
    /*
     * // construct an empty deque
     */
-   public Deque(){
+   public Deque() {
        first = null;
        last  = null;
        N = 0;
@@ -37,7 +37,7 @@ public class Deque<Item> implements Iterable<Item> {
    /*
     * // is the deque empty?
     */
-   public boolean isEmpty(){
+   public boolean isEmpty() {
       return N == 0;
    }   
    
@@ -51,7 +51,7 @@ public class Deque<Item> implements Iterable<Item> {
    /*
     * // insert the item at the front
     */
-   public void addFirst(Item item){
+   public void addFirst(Item item) {
        Node<Item> oldfirst = first;
        first = new Node<Item>();
        first.item = item;
@@ -72,7 +72,7 @@ public class Deque<Item> implements Iterable<Item> {
    /*
     * // insert the item at the end
     */
-   public void addLast(Item item){
+   public void addLast(Item item) {
        Node<Item> oldlast = last;
        last = new Node<Item>();
        last.item = item;
@@ -123,8 +123,8 @@ public class Deque<Item> implements Iterable<Item> {
            current = first;
        }
 
-       public boolean hasNext()  { return current != null;                     }
-       public void remove()      { throw new UnsupportedOperationException();  }
+       public boolean hasNext() { return current != null;                     }
+       public void remove()     { throw new UnsupportedOperationException();  }
 
        public Item next() {
            if (!hasNext()) throw new NoSuchElementException();
@@ -141,16 +141,16 @@ public class Deque<Item> implements Iterable<Item> {
    {
        Deque<Integer> deq = new Deque<Integer>();
 
-       for (Integer i = 0; i < 10; ++i)
+       for (int i = 0; i < 10; ++i)
        deq.addLast(i);
 
-       for (Integer i = 0; i < 5; ++i)
+       for (int i = 0; i < 5; ++i)
        deq.addFirst(i);
 
-       for (Integer i = 0; i < 13; ++i)
+       for (int i = 0; i < 13; ++i)
        deq.removeLast();
 
-       while(!deq.isEmpty())
+       while (!deq.isEmpty())
        {
            StdOut.println("Smthing" + " " + deq.removeLast());
        }
