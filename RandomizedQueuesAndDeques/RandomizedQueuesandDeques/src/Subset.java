@@ -20,20 +20,25 @@ public class Subset {
        String str;
        RandomizedQueue<String> rq = new RandomizedQueue<String>();
 
+       if (StdIn.isEmpty()) 
+           System.out.println("No input elements");
+       
        if (args[0] != null)
        {
            k = Integer.parseInt(args[0]);
            //System.out.println("Your string was: " + k);
-           while(!StdIn.isEmpty())
+           while (!StdIn.isEmpty())
            {
                str = StdIn.readString();
                rq.enqueue(str);
-               //System.out.println("Your string was: " + str);
            }
-
            N = rq.size();
+           
+          /* for (int i = 0; i < N; ++i)
+               System.out.println(rq.dequeue());*/
 
-          if (k > 0 && k < N)
+
+          if (k > 0 && k <= N)
              for (int i = 0; i < k; ++i)
                 System.out.println(rq.dequeue());
           else if (k > 0 && k > N)

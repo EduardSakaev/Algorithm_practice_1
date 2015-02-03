@@ -33,7 +33,7 @@ public class Deque<Item> implements Iterable<Item> {
        first = null;
        last  = null;
        N = 0;
-   }                           
+   }
    /*
     * // is the deque empty?
     */
@@ -52,39 +52,37 @@ public class Deque<Item> implements Iterable<Item> {
     * // insert the item at the front
     */
    public void addFirst(Item item) {
+       if (item == null) throw new java.lang.NullPointerException();
        Node<Item> oldfirst = first;
        first = new Node<Item>();
        first.item = item;
        first.prev = null;
        first.next = oldfirst;
        if (isEmpty())
-       {
           last = first;
-       }
        else
-       {
           oldfirst.prev = first;
-       }
        N++;
-       
-   }         
-   
+
+   }
+
    /*
     * // insert the item at the end
     */
    public void addLast(Item item) {
+       if (item == null) throw new java.lang.NullPointerException();
        Node<Item> oldlast = last;
        last = new Node<Item>();
        last.item = item;
        last.next = null;
        last.prev = oldlast;
 
-       if (isEmpty())   
+       if (isEmpty())
           first = last;
        else  
           oldlast.next = last;
        N++;
-   }        
+   }
 
    /*
     * // delete and return the item at the front
@@ -93,9 +91,12 @@ public class Deque<Item> implements Iterable<Item> {
        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
        Item item = first.item;
        first = first.next;
+       if (first != null)
+          first.prev = null; 
        N--;
+       if (isEmpty()) last = null;
        return item;
-   }  
+   }
 
    /*
     * // delete and return the item at the end
@@ -104,9 +105,11 @@ public class Deque<Item> implements Iterable<Item> {
        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
        Item item = last.item;
        last = last.prev;
+       if (last != null) last.next = null;
        N--;
+       if (isEmpty()) first = null;
        return item;
-   }                
+   }
 
    /*
     * // return an iterator over items in order from front to end
@@ -123,13 +126,12 @@ public class Deque<Item> implements Iterable<Item> {
            current = first;
        }
 
-       public boolean hasNext() { return current != null;                     }
+       public boolean hasNext() {  return current != null;                    }
        public void remove()     { throw new UnsupportedOperationException();  }
-
        public Item next() {
            if (!hasNext()) throw new NoSuchElementException();
            Item item = current.item;
-           current = current.next; 
+           current = current.next;
            return item;
        }
    }
@@ -140,20 +142,43 @@ public class Deque<Item> implements Iterable<Item> {
    public static void main(String[] args)
    {
        Deque<Integer> deq = new Deque<Integer>();
-
-       for (int i = 0; i < 10; ++i)
-       deq.addLast(i);
+       for (int i = 0; i < 5; ++i)
+       {
+           System.out.println("AddLast " +i);
+           deq.addLast(i);
+       }
 
        for (int i = 0; i < 5; ++i)
-       deq.addFirst(i);
-
-       for (int i = 0; i < 13; ++i)
-       deq.removeLast();
-
-       while (!deq.isEmpty())
        {
-           StdOut.println("Smthing" + " " + deq.removeLast());
+           int random = StdRandom.uniform(4);
+           if (random == 0)
+           {
+               System.out.println("AddLast " +i);
+               deq.addLast(i);
+           }
+           else if (random == 1)
+           {
+               System.out.println("AddFirst " +i);
+               deq.addFirst(i);
+           }
+           else if (random == 2)
+           {
+               System.out.println("Remove Last" + deq.removeLast());
+           }
+           else
+           {
+               System.out.println("Remove First " + deq.removeFirst());
+           }
        }
+       
+       int count = 0;
+       for (Iterator itr = deq.iterator(); itr.hasNext();) 
+       {
+           count++;
+           System.out.println("Iter " + itr.next());
+       }
+       
+       System.out.println("In dequeu: " + deq.size() + " In iter: " + count);
    }
 }
 
