@@ -21,3 +21,9 @@ and to run
 
 java -cp '.:/home/ubuntu/test/libs/*.jar' flights
 
+
+//========================================
+how to enable/disable assertions
+
+java -ea MyProgram
+java -de MyProgram (default)
