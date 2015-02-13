@@ -52,14 +52,21 @@ public class Point implements Comparable<Point> {
 	// slope between this point and that point
 	public double slopeTo(Point that) {
 	    /* YOUR CODE HERE */
-	    double slope = (that.y * 1.0 - this.y)/(that.x * 1.0 - this.x);
+		double slope;
+		if (that.y == this.y && that.x == this.x)
+			slope = -0;
+		else if (that.y == this.y)
+			slope = Math.abs(this.y);
+		else if (that.x == this.x) 
+			slope = - Math.abs(this.x);
+		else
+			slope = (that.y * 1.0 - this.y)/(that.x * 1.0 - this.x);
 	    return slope;
 	}
 	
 	// is this point lexicographically smaller than that one?
-	// comparing y-coordinates and breaking ties by x-coordinates
+	// comparing x-coordinates and breaking ties by y-coordinates
 	public int compareTo(Point that) {
-	    /* YOUR CODE HERE */
 	    if(this.y < that.y) return 1;
 	    else if(this.y == that.y) {
 	        if(this.x < that.x) return 1;
